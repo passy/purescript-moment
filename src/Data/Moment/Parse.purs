@@ -1,4 +1,10 @@
-module Data.Moment.Parse where
+module Data.Moment.Parse
+  ( parseObj
+  , MomentObj()
+  , parseUnix
+  , parseEpoch
+  , parseStringZ
+  ) where
 
 import Prelude
 
