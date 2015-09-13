@@ -87,8 +87,8 @@ setZone = method1 "zone"
 getZone :: Moment -> Zone
 getZone = method0 "zone"
 
-valueOf :: Moment -> Epoch
-valueOf = method0 "valueOf"
+valueOf :: Moment -> Milliseconds
+valueOf = method0 "valueOf" >>> Milliseconds
 
-epoch :: Moment -> Epoch
+epoch :: Moment -> Milliseconds
 epoch = valueOf

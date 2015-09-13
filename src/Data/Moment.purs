@@ -1,9 +1,7 @@
 module Data.Moment
-  ( Epoch()
-  , Unix()
-  , Zone()
-  , DayOfYear()
+  ( Zone()
   , WeekOfYear()
+  , DayOfYear()
   , Moment()
   , invalid
   , now
@@ -25,17 +23,11 @@ import Data.Foldable
 import Data.Tuple
 import Data.Array
 
--- milliseconds
-type Epoch        = Number
--- seconds
-type Unix         = Number
--- timezone
-type Zone         = Number
-
-type DayOfYear    = Number
-type WeekOfYear   = Number
-
 foreign import data Moment :: *
+
+type Zone = Int
+type WeekOfYear = Int
+type DayOfYear = Int
 
 method1' :: forall a. String -> a -> Moment -> Moment
 method1' s a m = method1 s (clone m) a

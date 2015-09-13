@@ -5,7 +5,7 @@
 
 var moment = require('moment');
 
-exports.parseUnix = function (u) {
+exports.parseUnix_ = function (u) {
   return moment.unix(u);
 };
 

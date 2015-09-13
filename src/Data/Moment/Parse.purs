@@ -53,14 +53,17 @@ parseObj mo = let
                           , milliseconds = fromMilliseconds mo.milliseconds }
   in if isValid mo' then Just mo' else Nothing
 
-foreign import parseUnix :: Unix -> Moment
+foreign import parseUnix_ :: Number -> Moment
+
+parseUnix :: Seconds -> Moment
+parseUnix (Seconds s) = parseUnix_ s
 
 foreign import parseString_ :: forall a e. Fn5 (Maybe Moment) (a -> Maybe Moment) Boolean (Array String) String (Maybe Moment)
 parseString = runFn5 parseString_ Nothing Just true
 parseStringForgiving = runFn5 parseString_ Nothing Just false
 
-parseEpoch :: Epoch -> Moment
-parseEpoch = unsafeToMoment
+parseEpoch :: Milliseconds -> Moment
+parseEpoch (Milliseconds s) = unsafeToMoment s
 
 -- TODO: Should be in an .Unsafe module.
 foreign import unsafeToMoment :: forall a. a -> Moment
