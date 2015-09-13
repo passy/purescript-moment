@@ -45,6 +45,8 @@ method2' s a b m = method2 s (clone m) a b
 
 foreign import invalid :: Moment
 foreign import now :: forall e. Eff (now :: Now | e) Moment
+foreign import max :: Moment -> Moment -> Moment
+foreign import min :: Moment -> Moment -> Moment
 
 isValid :: Moment -> Boolean
 isValid = method0 "isValid"

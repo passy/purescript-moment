@@ -12,3 +12,6 @@ exports.now = function () {
 exports.invalid = function () {
   return moment.invalid();
 };
+
+exports.max = moment.max;
+exports.min = moment.min;
