@@ -10,7 +10,5 @@
 # Documentation
 
 - [Module Data.Moment](docs/Data/Moment.md)
-- [Module Data.Moment.Compare](docs/Data/Compare.md)
-- [Module Data.Moment.Manipulate](docs/Data/Manipulate.md)
-- [Module Data.Moment.Parse](docs/Data/Parse.md)
-- [Module Data.Moment.GetSet](docs/Data/getSet.md)
+- [Module Data.Moment.Parse](docs/Data/Moment/Parse.md)
+- [Module Data.Moment.GetSet](docs/Data/Moment/GetSet.md)
