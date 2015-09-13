@@ -2,21 +2,21 @@ module Data.Moment
   ( Epoch()
   , Unix()
   , Zone()
-  , DayOfMonth()
   , DayOfYear()
   , WeekOfYear()
   , Moment()
-  , Now()
   , invalid
   , now
   , isValid
   , format
   , calendar
+  , clone
   ) where
 
 import Prelude
 
 import Control.Monad.Eff
+import Data.Date (Now())
 import Data.Function
 import Data.Foreign.OOFFI
 import Data.Maybe
@@ -32,12 +32,10 @@ type Unix         = Number
 -- timezone
 type Zone         = Number
 
-type DayOfMonth   = Number
 type DayOfYear    = Number
 type WeekOfYear   = Number
 
 foreign import data Moment :: *
-foreign import data Now    :: !
 
 method1' :: forall a. String -> a -> Moment -> Moment
 method1' s a m = method1 s (clone m) a
@@ -93,6 +91,7 @@ instance eqGranularity :: Eq Granularity where
   eq Quarter  Quarter = true
   eq Month    Month   = true
   eq Year     Year    = true
+  eq _        _       = false
 
 instance ordGranularity :: Ord Granularity where
   compare = compare `on` fromEnum
@@ -126,20 +125,22 @@ instance enmGranularity :: Enum Granularity where
     0 -> Just Second
     1 -> Just Minute
     2 -> Just Hour
-    3 -> Just Week
-    4 -> Just Month
-    5 -> Just Quarter
-    6 -> Just Year
+    3 -> Just Day
+    4 -> Just Week
+    5 -> Just Month
+    6 -> Just Quarter
+    7 -> Just Year
     _ -> Nothing
 
   fromEnum e = case e of
     Second -> 0
     Minute -> 1
     Hour -> 2
-    Week -> 3
-    Month -> 4
-    Quarter -> 5
-    Year -> 6
+    Day -> 3
+    Week -> 4
+    Month -> 5
+    Quarter -> 6
+    Year -> 7
 
 instance showGranularity :: Show Granularity where
   show Second  = "second"

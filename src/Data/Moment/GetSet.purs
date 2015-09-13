@@ -2,42 +2,42 @@ module Data.Moment.GetSet where
 
 import Prelude
 
-import Data.Date (Month(..), DayOfWeek(..))
+import Data.Time
+import Data.Date hiding (now)
 import Data.Moment
-import Data.Moment.Duration
 import Data.Foreign.OOFFI
 import Data.Maybe
 import Data.Enum
 
-milliseconds :: Moment -> Duration
+milliseconds :: Moment -> Milliseconds
 milliseconds = method0 "milliseconds" >>> Milliseconds
 
-setMilliseconds :: Duration -> Moment -> Moment
-setMilliseconds (Milliseconds m) = method1 "milliseconds" m
+setMilliseconds :: Milliseconds -> Moment -> Moment
+setMilliseconds (Milliseconds m) = clone >>> method1 "milliseconds" m
 
-seconds :: Moment -> Duration
+seconds :: Moment -> Seconds
 seconds = method0 "seconds" >>> Seconds
 
-setSeconds :: Duration -> Moment -> Moment
-setSeconds (Seconds s) = method1 "seconds" s
+setSeconds :: Seconds -> Moment -> Moment
+setSeconds (Seconds s) = clone >>> method1 "seconds" s
 
-minutes :: Moment -> Duration
+minutes :: Moment -> Minutes
 minutes = method0 "minutes" >>> Minutes
 
-setMinutes :: Duration -> Moment -> Moment
-setMinutes (Minutes m) = method1 "minutes" m
+setMinutes :: Minutes -> Moment -> Moment
+setMinutes (Minutes m) = clone >>> method1 "minutes" m
 
-hours :: Moment -> Duration
+hours :: Moment -> Hours
 hours = method0 "hours" >>> Hours
 
-setHours :: Duration -> Moment -> Moment
-setHours (Hours h) = method1 "hours" h
+setHours :: Hours -> Moment -> Moment
+setHours (Hours h) = clone >>> method1 "hours" h
 
 dayOfMonth :: Moment -> DayOfMonth
 dayOfMonth = method0 "dates"
 
 setDayOfMonth :: DayOfMonth -> Moment -> Moment
-setDayOfMonth = method1 "dates"
+setDayOfMonth d m = method1 "dates" d $ clone m
 
 dayOfWeek :: Moment -> Maybe DayOfWeek
 dayOfWeek = method0 "days" >>> toEnum
@@ -90,4 +90,5 @@ getZone = method0 "zone"
 valueOf :: Moment -> Epoch
 valueOf = method0 "valueOf"
 
+epoch :: Moment -> Epoch
 epoch = valueOf
