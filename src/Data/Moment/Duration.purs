@@ -1,5 +1,7 @@
 module Data.Moment.Duration where
 
+import Prelude
+
 import Data.Moment
 import Data.Function
 import Data.Foreign.OOFFI
@@ -7,7 +9,7 @@ import Data.Foreign.OOFFI
 data Duration = Milliseconds Number
               | Seconds Number
               | Minutes Number
-              | Hours Number 
+              | Hours Number
               | Months Number
               | Weeks Number
               | Years Number
@@ -45,11 +47,7 @@ instance showDuration :: Show Duration where
 
 foreign import data MDuration :: *
 
-foreign import durToMDurImpl """
-  function durToMDurImpl(n, s){
-    return moment.duration(n, s);
-  }
-""" :: Fn2 Number String MDuration
+foreign import durToMDurImpl :: Fn2 Number String MDuration
 
 durToMDur :: Duration -> MDuration
 durToMDur d = runFn2 durToMDurImpl (foldDuration d) (stringDuration d)
@@ -88,15 +86,13 @@ semigroupDurationImpl :: MDuration -> MDuration -> MDuration
 semigroupDurationImpl = method1 "add"
 
 instance durationSemigroup :: Semigroup Duration where
-  (<>) (Milliseconds a) (Milliseconds b) = Milliseconds $ a + b
-  (<>) (Seconds a)      (Seconds b)      = Seconds      $ a + b
-  (<>) (Minutes a)      (Minutes b)      = Minutes      $ a + b
-  (<>) (Hours  a)       (Hours  b)       = Hours        $ a + b
-  (<>) (Months a)       (Months b)       = Months       $ a + b
-  (<>) (Weeks a)        (Weeks b)        = Weeks        $ a + b
-  (<>) (Years a)        (Years b)        = Years        $ a + b
-  (<>) (Days a)         (Days b)         = Days         $ a + b
-  (<>) d d' = asMilliseconds' 
-            $ durToMDur d `semigroupDurationImpl` durToMDur d'
-
-
+  append (Milliseconds a) (Milliseconds b) = Milliseconds $ a + b
+  append (Seconds a)      (Seconds b)      = Seconds      $ a + b
+  append (Minutes a)      (Minutes b)      = Minutes      $ a + b
+  append (Hours  a)       (Hours  b)       = Hours        $ a + b
+  append (Months a)       (Months b)       = Months       $ a + b
+  append (Weeks a)        (Weeks b)        = Weeks        $ a + b
+  append (Years a)        (Years b)        = Years        $ a + b
+  append (Days a)         (Days b)         = Days         $ a + b
+  append d d' = asMilliseconds'
+                $ durToMDur d `semigroupDurationImpl` durToMDur d'

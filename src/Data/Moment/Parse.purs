@@ -1,5 +1,7 @@
 module Data.Moment.Parse where
 
+import Prelude
+
 import Data.Moment.GetSet(setZone)
 import Data.Moment.Duration
 import Data.Moment
@@ -27,7 +29,7 @@ parseObjImpl  :: { years        :: Number
 parseObjImpl = unsafeToMoment
 
 parseObj :: MomentObj -> Maybe Moment
-parseObj mo = let 
+parseObj mo = let
     f   = foldDuration
     mo' = parseObjImpl mo{ years        = f mo.years
                          , months       = f mo.months
@@ -38,24 +40,17 @@ parseObj mo = let
                          , milliseconds = f mo.milliseconds}
   in if isValid mo' then Just mo' else Nothing
 
-foreign import parseUnix """
-  function parseUnix(u){ return moment.unix(u); }
-""" :: Unix -> Moment
+foreign import parseUnix :: Unix -> Moment
 
-foreign import parseString_ """
-  function parseString_(Nothing, Just, strict, fs, s){ 
-    var m = moment(s, fs, strict);
-    return m.isValid() ? Just(m) : Nothing;
-  }
-""" :: forall a e. Fn5 (Maybe Moment) (a -> Maybe Moment) Boolean [String] String (Maybe Moment)
+foreign import parseString_ :: forall a e. Fn5 (Maybe Moment) (a -> Maybe Moment) Boolean (Array String) String (Maybe Moment)
 parseString = runFn5 parseString_ Nothing Just true
 parseStringForgiving = runFn5 parseString_ Nothing Just false
 
 parseEpoch :: Epoch -> Moment
 parseEpoch = unsafeToMoment
 
-foreign import unsafeToMoment """ function unsafeToMoment(e){ return moment(e); }
-""" :: forall a. a -> Moment
+-- TODO: Should be in an .Unsafe module.
+foreign import unsafeToMoment :: forall a. a -> Moment
 
-parseStringZ :: [String] -> String -> Maybe Moment
+parseStringZ :: (Array String) -> String -> Maybe Moment
 parseStringZ ss s = setZone s <$> parseString ss s
