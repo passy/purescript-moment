@@ -10,7 +10,7 @@
     "tmp"
   ],
   "dependencies": {
-    "moment": "~2.8.3",
+    "moment": "~2.10.0",
     "purescript-oo-ffi": "~0.0.1",
     "purescript-maybe": "~0.2.1",
     "purescript-enums": "~0.2.0",
